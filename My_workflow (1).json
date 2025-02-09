@@ -1,0 +1,417 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/campaign-request",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5121e568-dcba-423d-bd7b-c9e2dda633b7",
+      "name": "Webhook",
+      "webhookId": "c81869ef-c53e-44f3-808b-8ded4632e805",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Based on the project type {{ $json.projectType }} and goal {{ $json.goal }},\nanalyze Web2 & Web3 market trends and suggest a marketing strategy. Keep it short.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "this is the system message"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        220,
+        0
+      ],
+      "id": "17e76b0d-2781-4da4-9dc5-731099b7f41a",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        180
+      ],
+      "id": "d3943c2d-345f-4f83-9ed1-a044dfba186c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "auTNFYKNHC9u9KLq",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "299206419",
+        "text": "=🔹 AI Strategy Proposal 🔹  \n{{ $json[\"text\"] }}  ",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Yes",
+                    "additionalFields": {
+                      "callback_data": "Yes"
+                    }
+                  },
+                  {
+                    "text": "No",
+                    "additionalFields": {
+                      "callback_data": "No"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        680,
+        0
+      ],
+      "id": "ddd53c5b-2300-4a42-85aa-4aef0ad9a690",
+      "name": "Telegram",
+      "credentials": {
+        "telegramApi": {
+          "id": "QUN6tMX0Ns31NutU",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "callback_query",
+          "inline_query",
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        680,
+        180
+      ],
+      "id": "c0ed4a1e-b743-4862-ac0e-6a619fdfb315",
+      "name": "Telegram Trigger",
+      "webhookId": "5906145a-ebe8-4029-875d-c7357d8cdfdb",
+      "credentials": {
+        "telegramApi": {
+          "id": "QUN6tMX0Ns31NutU",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json[\"callback_query\"][\"data\"] == \"Yes\" }}",
+                    "rightValue": "Yes",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9873a076-6d16-4bc2-9889-b5603c248d55",
+                    "leftValue": "={{ $json[\"callback_query\"][\"data\"] === \"No\" }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        900,
+        180
+      ],
+      "id": "f0a19b24-acae-4fbc-be8e-d1db30256b54",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "text": "={{$json[\"content\"]}}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        80
+      ],
+      "id": "c591a8c3-766b-41ca-afc8-f26b41aae9ec",
+      "name": "X",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "S7qc5kAfddPTW8Fp",
+          "name": "X account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0915ede8-0a91-4ff5-8833-4816dab4fec9",
+              "name": "tweets",
+              "value": "[   { \"content\": \"Web3 is evolving fast! 🚀 What trends do you think will dominate in 2025? #Crypto #NFTs\", \"scheduledTime\": \"2025-02-09T10:00:00Z\" },   { \"content\": \"Building an NFT community? Focus on engagement, not just hype. Here’s why 🧵👇 #Web3Marketing\", \"scheduledTime\": \"2025-02-09T12:30:00Z\" },   { \"content\": \"Airdrops are still one of the best ways to reward early supporters. Are you planning one? #NFTCommunity\", \"scheduledTime\": \"2025-02-10T15:00:00Z\" },   { \"content\": \"Twitter or Discord: Where does your Web3 audience engage the most? Let's discuss! #CryptoMarketing\", \"scheduledTime\": \"2025-02-10T18:45:00Z\" },   { \"content\": \"Influencer marketing in Web3 is changing. Authenticity > Hype. What’s your approach? #NFTs\", \"scheduledTime\": \"2025-02-11T09:00:00Z\" } ]",
+              "type": "array"
+            },
+            {
+              "id": "663a3f32-ee9b-4ba4-ac4a-51bb4b31ddf9",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        80
+      ],
+      "id": "315a835c-b728-4522-b933-4a541a6c6b44",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1340,
+        80
+      ],
+      "id": "996c07ed-757a-4795-9aec-43f4f1837063",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        1860,
+        160
+      ],
+      "id": "e9a68b44-d4c9-4f60-9cf7-c658a4d24551"
+    },
+    {
+      "parameters": {
+        "resume": "specificTime",
+        "dateTime": "={{$json[\"scheduledTime\"]}}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1560,
+        -20
+      ],
+      "id": "427ab84e-7baf-4197-81f8-6bc9fe26aad2",
+      "name": "Wait",
+      "webhookId": "c9e40af8-0b66-4c80-bf82-095726edb89a"
+    }
+  ],
+  "pinData": {
+    "Wait": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      },
+      {
+        "json": {
+          "name": "Second item",
+          "code": 2
+        }
+      }
+    ]
+  },
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "X",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "156fab22-2529-44aa-8c78-8308a52987ab",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e607d03c0f6759bf32b9a839e0abcc6ce0355a3635eab1489040fdd884b5cbe"
+  },
+  "id": "nAc91avykNo79iZJ",
+  "tags": []
+}
