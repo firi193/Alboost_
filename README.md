@@ -20,3 +20,23 @@ https://foralindor24.bubbleapps.io/version-test/ai_landing_page_2?debug_mode=tru
 
 
 ## 📄 Setup Instructions  
+1️⃣ Access the Web App
+
+Go to the Landing Page.
+Click on "Explore Now" to proceed.
+2️⃣ Navigate to the Dashboard
+
+You’ll be redirected to the AI-powered dashboard.
+Start interacting with the AI agent to receive action plans tailored to your campaign goals.
+3️⃣ Approve & Automate Campaigns
+
+Review AI-generated action plans.
+Click "Approve" to automate social media campaigns across Twitter, Discord, and Google Analytics.
+4️⃣ Integrate Social Media Platforms
+
+Connect your Twitter, Discord, and Google Analytics accounts for seamless execution.
+View and manage integrations in the dashboard settings.
+5️⃣ Schedule Social Media Posts
+
+Click on "Schedule Posts" to automate content distribution.
+The AI will handle post timing and audience targeting based on campaign insights.
