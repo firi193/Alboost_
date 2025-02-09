@@ -14,7 +14,7 @@
 - **Google Cloud Platform** (Optional - API hosting)  
 
 ## 🌐 Live MVP  
-https://your-bubble-app.bubbleapps.io/version-test](https://foralindor24.bubbleapps.io/version-test/ai_landing_page_2?debug_mode=true
+https://foralindor24.bubbleapps.io/version-test/ai_landing_page_2?debug_mode=true
 
 ## 📡 API Documentation  
 
